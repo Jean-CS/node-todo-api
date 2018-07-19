@@ -10,9 +10,8 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', (err, client) => {
   const db = client.db('TodoApp')
 
   // fetch todo with _id
-  db.collection('Todos').find({_id: '57bb12335d123bo43414'}).toArray().then((docs) => {
-    console.log('Todos');
-    console.log(JSON.stringify(docs, undefined, 2));
+  db.collection('Todos').find().count().then((count) => {
+    console.log('Todos count:', count);
   }, (err) => {
     console.log('Unable to fetch todos', err);
   });
