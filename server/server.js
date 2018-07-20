@@ -1,9 +1,15 @@
 let express = require('express');
 let bodyParser = require('body-parser'); // takes the JSON and converts to object
 
-let {mongoose} = require('./db/mongoose');
-let {Todo} = require('./models/todo');
-let {User} = require('./models/user');
+let {
+  mongoose
+} = require('./db/mongoose');
+let {
+  Todo
+} = require('./models/todo');
+let {
+  User
+} = require('./models/user');
 
 let app = express();
 
@@ -20,6 +26,16 @@ app.post('/todos', (req, res) => {
     res.status(400).send(err);
   });
 });
+
+app.get('/todos', (req, res) => {
+  Todo.find().then((docs) => {
+    res.send({
+      docs
+    }); // sending an object is more flexible than sending an array with -> Sres.send(docs)
+  }, (err) => {
+    res.status(400).send(err);
+  });
+})
 
 app.listen(3000, () => {
   console.log('Server started on port 3000');
