@@ -8,9 +8,17 @@ const {
   Todo
 } = require('./../models/todo');
 
+const dummyTodos = [{
+  text: 'First test dummy todo'
+}, {
+  text: 'Second test dummy todo'
+}];
+
 // clear the database before each test
 beforeEach((done) => {
-  Todo.remove({}).then(() => done());
+  Todo.remove({}).then(() => {
+    return Todo.insertMany(dummyTodos); // return allows for chaining promises, as below
+  }).then(() => done());
 });
 
 describe('POST /todos', () => {
@@ -31,8 +39,9 @@ describe('POST /todos', () => {
           return done(err);
         }
 
-        // find() returns all documents. this test assumes the database only has the inserted document
-        Todo.find().then((todos) => {
+        Todo.find({
+          text
+        }).then((todos) => {
           expect(todos.length).toBe(1);
           expect(todos[0].text).toBe(text);
           done();
@@ -56,9 +65,21 @@ describe('POST /todos', () => {
 
         // find() returns all documents. this test assumes the database only has the inserted document
         Todo.find().then((todos) => {
-          expect(todos.length).toBe(0);
+          expect(todos.length).toBe(dummyTodos.length);
           done();
         }).catch((e) => done(e));
       });
+  });
+});
+
+describe('GET /todos', () => {
+  it('should return list of todos', (done) => {
+    request(app)
+      .get('/todos')
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.todos.length).toBe(2);
+      })
+      .end(done);
   });
 });

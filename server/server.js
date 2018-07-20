@@ -28,9 +28,9 @@ app.post('/todos', (req, res) => {
 });
 
 app.get('/todos', (req, res) => {
-  Todo.find().then((docs) => {
+  Todo.find().then((todos) => {
     res.send({
-      docs
+      todos
     }); // sending an object is more flexible than sending an array with -> Sres.send(docs)
   }, (err) => {
     res.status(400).send(err);
