@@ -1,8 +1,12 @@
 const expect = require('expect');
 const request = require('supertest');
 
-const {app} = require('./../server');
-const {Todo} = require('./../models/todo');
+const {
+  app
+} = require('./../server');
+const {
+  Todo
+} = require('./../models/todo');
 
 // clear the database before each test
 beforeEach((done) => {
@@ -15,7 +19,9 @@ describe('POST /todos', () => {
 
     request(app)
       .post('/todos')
-      .send({ text })
+      .send({
+        text
+      })
       .expect(200)
       .expect((res) => {
         expect(res.body.text).toBe(text); // response should have the same text property as the variable
@@ -32,6 +38,27 @@ describe('POST /todos', () => {
           done();
         }).catch((err) => done(err));
       });
+  });
 
+  it('should not create todo with invalid body data', (done) => {
+    let text = '';
+
+    request(app)
+      .post('/todos')
+      .send({
+        text
+      })
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+
+        // find() returns all documents. this test assumes the database only has the inserted document
+        Todo.find().then((todos) => {
+          expect(todos.length).toBe(0);
+          done();
+        }).catch((e) => done(e));
+      });
   });
 });
