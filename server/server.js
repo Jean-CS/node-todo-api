@@ -9,6 +9,8 @@ const {User} = require('./models/user');
 
 const app = express();
 
+const port = process.env.PORT || 3000;
+
 app.use(bodyParser.json()); // parses every json request into an object
 
 app.post('/todos', (req, res) => {
@@ -49,8 +51,8 @@ app.get('/todos/:id', (req, res) => {
   }).catch(() => res.status(400).send());
 });
 
-app.listen(3000, () => {
-  console.log('Server started on port 3000');
+app.listen(port, () => {
+  console.log(`Server started on port ${port}`);
 });
 
 module.exports = {
