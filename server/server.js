@@ -99,6 +99,24 @@ app.patch('/todos/:id', (req, res) => {
   }).catch((err) => res.status(400).send());
 });
 
+app.post('/users', (req, res) => {
+  const body = _.pick(req.body, ['email', 'password']);
+
+  // same as below
+  // let user = new User({
+  //   email: body.email,
+  //   password: body.password
+  // });
+
+  let user = new User(body);
+
+  user.save().then((doc) => {
+    res.send(doc);
+  }, (err) => {
+    res.status(400).send(err);
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
 });
