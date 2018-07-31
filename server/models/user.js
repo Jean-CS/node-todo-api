@@ -59,6 +59,18 @@ UserSchema.methods.generateAuthToken = function () {
   }).catch((err) => console.log(err));
 };
 
+UserSchema.methods.removeToken = function (token) {
+  let user = this;
+
+  // finds a document which has a tokens.token propery equal to args token
+  // and removes that tokens array enterily, so the 'tokens' key/propery will have 0 elements
+  return user.update({
+    $pull: {
+      tokens: {token}
+    }
+  });
+};
+
 // (.methods) instance methods get called with the individual document
 // (.statics) model methods get called with the overall Model
 UserSchema.statics.findByToken = function (token) {
