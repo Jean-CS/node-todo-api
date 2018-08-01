@@ -19,6 +19,10 @@ const dummyUsers = [{
   _id: userTwoId,
   email: 'example@somethingelse.com',
   password: 'userTwoPass',
+  tokens: [{
+    access: 'auth',
+    token: jwt.sign({_id: userTwoId, access: 'auth'}, 'abc123').toString()
+  }]
 }];
 
 const dummyTodos = [{
