@@ -23,12 +23,14 @@ const dummyUsers = [{
 
 const dummyTodos = [{
   _id: new ObjectID(),
-  text: 'First test dummy todo'
+  text: 'First test dummy todo',
+  _creator: userOneId
 }, {
   _id: new ObjectID(),
   text: 'Second test dummy todo',
   completed: true,
-  completedAt: 333
+  completedAt: 333,
+  _creator: userTwoId
 }];
 
 // clear the database before each test
